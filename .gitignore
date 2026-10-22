@@ -43,6 +43,7 @@ application-local.properties
 application-local.yml
 *.pem
 *.key
+body.json
 
 ### Logs ###
 *.log
