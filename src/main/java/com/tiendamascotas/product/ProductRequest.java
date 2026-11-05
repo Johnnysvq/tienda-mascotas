@@ -33,9 +33,8 @@ public record ProductRequest(
     ProductStatus status,
 
     // Solo http o una ruta propia que empiece con una sola "/"
-    @Size(max = 500, message = "La URL de la imagen no puede superar los 500 caracteres")
-    @Pattern(regexp = "^(https://\\S+|/(?!/)\\S*)$", message = "La imagen debe ser una URL https o una ruta que empiece con /")
-    String imageUrl,
+    @Pattern(regexp = "^products/[A-Za-z0-9_-]{1,100}$", message = "La clave de imagen no es válida")
+    String imageKey,
 
     @NotNull(message = "La marca es obligatoria") @Positive Long brandId,
     @NotNull(message = "La categoría es obligatoria") @Positive Long categoryId,

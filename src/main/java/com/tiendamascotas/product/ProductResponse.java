@@ -9,7 +9,7 @@ public record ProductResponse(
     BigDecimal price,
     int stock,
     ProductStatus status,
-    String imageUrl,
+    String imageKey,
     Ref brand,
     Ref category,
     Ref petType) {
@@ -22,7 +22,7 @@ public record ProductResponse(
                 p.getPrice(),
                 p.getStock(),
                 p.getStatus(),
-                p.getImageUrl(),
+                p.getImageKey(),
                 new Ref(p.getBrand().getId(), p.getBrand().getName()),
                 new Ref(p.getCategory().getId(), p.getCategory().getName()),
                 new Ref(p.getPetType().getId(), p.getPetType().getName()));

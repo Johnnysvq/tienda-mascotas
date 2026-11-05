@@ -49,8 +49,8 @@ public class Product {
     @Column(nullable = false, length = 20)
     private ProductStatus status;
 
-    @Column(length = 500)
-    private String imageUrl;
+    @Column(length = 200)
+    private String imageKey;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "brand_id", nullable = false)

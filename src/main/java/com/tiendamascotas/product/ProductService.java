@@ -65,7 +65,7 @@ public class ProductService {
         product.setPrice(request.price());
         product.setStock(request.stock());
         product.setStatus(request.status());
-        product.setImageUrl(blankToNull(request.imageUrl()));
+        product.setImageKey(blankToNull(request.imageKey()));
         product.setBrand(brandService.getEntity(request.brandId()));
         product.setCategory(categoryService.getEntity(request.categoryId()));
         product.setPetType(petTypeService.getEntity(request.petTypeId()));
