@@ -57,4 +57,9 @@ public class BrandService {
     private Brand getOrThrow(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Marca con id " + id + " no encontrada"));
     }
+
+    @Transactional(readOnly = true)
+    public Brand getEntity(Long id) {
+        return getOrThrow(id);
+    }
 }

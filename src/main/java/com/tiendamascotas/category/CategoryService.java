@@ -56,4 +56,9 @@ public class CategoryService {
     private Category getOrThrow(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Categoría con id: " + id + " no encontrada"));
     }
+
+    @Transactional(readOnly = true)
+    public Category getEntity(Long id) {
+        return getOrThrow(id);
+    }
 }

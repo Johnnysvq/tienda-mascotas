@@ -69,4 +69,9 @@ public class ProviderService {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Proveedor con id " + id + " no encontrado"));
     }
+
+    @Transactional(readOnly = true)
+    public Provider getEntity(Long id) {
+        return getOrThrow(id);
+    }
 }

@@ -57,4 +57,9 @@ public class PetTypeService {
         return repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No se encontró el tipo de mascota con id: " + id));
     }
+
+    @Transactional(readOnly = true)
+    public PetType getEntity(Long id) {
+        return getOrThrow(id);
+    }
 }
