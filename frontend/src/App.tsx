@@ -1,17 +1,25 @@
-import { ProductList } from './features/products/ProductList'
+import { lazy, Suspense } from 'react'
+import { Route, Routes } from 'react-router'
+import { RequireAuth } from './features/auth/RequireAuth'
+import { StorePage } from './features/products/StorePage'
+
+const LoginPage = lazy(() => import('./features/auth/LoginPage'))
+const AdminLayout = lazy(() => import('./features/admin/AdminLayout'))
+const AdminHome = lazy(() => import('./features/admin/AdminHome'))
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-slate-50 text-slate-900">
-      <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto max-w-6xl px-6 py-4">
-          <p className="text-xl font-bold">Tienda Mascotas</p>
-        </div>
-      </header>
-      <main className="mx-auto max-w-6xl p-6">
-        <h1 className="mb-4 text-2xl font-bold">Catálogo</h1>
-        <ProductList />
-      </main>
-    </div>
+    <Suspense fallback={<p className="p-6 text-slate-500">Cargando…</p>}>
+      <Routes>
+        <Route path="/" element={<StorePage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/admin" element={<RequireAuth />}>
+          <Route element={<AdminLayout />}>
+            <Route index element={<AdminHome />} />
+          </Route>
+        </Route>
+        <Route path="*" element={<p className="p-6">Página no encontrada.</p>} />
+      </Routes>
+    </Suspense>
   )
 }
