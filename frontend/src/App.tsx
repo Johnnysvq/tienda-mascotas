@@ -6,6 +6,7 @@ import { StorePage } from './features/products/StorePage'
 const LoginPage = lazy(() => import('./features/auth/LoginPage'))
 const AdminLayout = lazy(() => import('./features/admin/AdminLayout'))
 const AdminHome = lazy(() => import('./features/admin/AdminHome'))
+const BrandsAdminPage = lazy(() => import('./features/brands/BrandsAdminPage'))
 
 export default function App() {
   return (
@@ -16,6 +17,7 @@ export default function App() {
         <Route path="/admin" element={<RequireAuth />}>
           <Route element={<AdminLayout />}>
             <Route index element={<AdminHome />} />
+            <Route path="brands" element={<BrandsAdminPage />} />
           </Route>
         </Route>
         <Route path="*" element={<p className="p-6">Página no encontrada.</p>} />
