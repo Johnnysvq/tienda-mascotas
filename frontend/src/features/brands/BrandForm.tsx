@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod"
-import {useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { ApiError } from "../../lib/api"
 import { errorMessage } from "../../lib/errors"
 import { useCreateBrand, useUpdateBrand, type Brand } from "./api"

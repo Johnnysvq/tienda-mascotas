@@ -44,6 +44,12 @@ export default function AdminLayout() {
           <NavLink to="/admin/brands" className={navLinkClass}>
             Marcas
           </NavLink>
+          <NavLink to="/admin/categories" className={navLinkClass}>
+            Categorías
+          </NavLink>
+          <NavLink to="/admin/pet-types" className={navLinkClass}>
+            Tipos Mascota
+          </NavLink>
         </nav>
       </header>
       <main className="mx-auto max-w-6xl p-6">

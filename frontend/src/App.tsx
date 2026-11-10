@@ -7,6 +7,8 @@ const LoginPage = lazy(() => import('./features/auth/LoginPage'))
 const AdminLayout = lazy(() => import('./features/admin/AdminLayout'))
 const AdminHome = lazy(() => import('./features/admin/AdminHome'))
 const BrandsAdminPage = lazy(() => import('./features/brands/BrandsAdminPage'))
+const CategoriesAdminPage = lazy(() => import('./features/categories/CategoriesAdminPage'))
+const PetTypesAdminPage = lazy(() => import('./features/petTypes/PetTypesAdminPage'))
 
 export default function App() {
   return (
@@ -18,6 +20,8 @@ export default function App() {
           <Route element={<AdminLayout />}>
             <Route index element={<AdminHome />} />
             <Route path="brands" element={<BrandsAdminPage />} />
+            <Route path="categories" element={<CategoriesAdminPage />} />
+            <Route path="pet-types" element={<PetTypesAdminPage />} />
           </Route>
         </Route>
         <Route path="*" element={<p className="p-6">Página no encontrada.</p>} />
