@@ -4,6 +4,7 @@ import { ApiError } from "../../lib/api"
 import { errorMessage } from "../../lib/errors"
 import { useCreateCategory, useUpdateCategory, type Category } from "./api"
 import { categorySchema, type CategoryFormValues} from './categorySchema'
+import { saveBtnClass, cancelBtnClass } from "../../lib/buttonStyles"
 
 interface CategoryFormProps {
     category: Category | null
@@ -54,7 +55,7 @@ export function CategoryForm({ category, onDone }: CategoryFormProps) {
         <form
               onSubmit={handleSubmit(onSubmit)}
               noValidate
-              className="rounded-lg border border-slate-200 bg-white p-4"
+              className="rounded-lg border border-slate-200 bg-formBg p-4 shadow-md"
         >
             <h2 className="mb-3 text-lg font-semibold">{category ? 'Editar Categoría' : 'Nueva Categoría'}</h2>
             <label htmlFor="category-name" className="block text-sm font-medium text-slate-700">
@@ -66,7 +67,7 @@ export function CategoryForm({ category, onDone }: CategoryFormProps) {
                 autoComplete="off"
                 aria-invalid={errors.name ? true : undefined}
                 aria-describedby={errors.name ? 'category-name-error' : undefined}
-                className="mt-1 w-full rounded-md border border-slate-300 px-3 py-2 focus:border-slate-500 focus:outline-none focus:ring-slate-500"
+                className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 focus:border-papaya focus:outline-hidden focus:ring-1 focus:ring-papaya"
                 {...register('name')}
             />
             {errors.name && (
@@ -84,7 +85,7 @@ export function CategoryForm({ category, onDone }: CategoryFormProps) {
                 <button
                     type="submit"
                     disabled={pending}
-                    className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800 disabled:opacity-60"
+                    className={saveBtnClass}
                 >
                     {pending ? 'Guardando...' : category ? 'Guardar cambios' : 'Crear categoría'}
                 </button>
@@ -92,7 +93,7 @@ export function CategoryForm({ category, onDone }: CategoryFormProps) {
                     <button
                         type="button"
                         onClick={onDone}
-                        className="rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
+                        className={cancelBtnClass}
                         >
                             Cancelar
                     </button>

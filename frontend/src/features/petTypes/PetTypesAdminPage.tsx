@@ -4,6 +4,8 @@ import { Pagination } from '../../components/Pagination'
 import { errorMessage } from '../../lib/errors'
 import { usePetTypes, useDeletePetType, type PetType } from './api'
 import { PetTypeForm } from './PetTypesForm'
+import { deleteBtnClass, editBtnClass } from '../../lib/buttonStyles'
+import { Edit2, Trash2 } from 'reicon-react';
 
 export default function PetTypesAdminPage() {
 
@@ -33,12 +35,8 @@ export default function PetTypesAdminPage() {
         })
     }
 
-    const actionClass = 
-        'rounded-md border border-slate-300 bg-white px-2.5 py-1 text-sm font-medium text-slate-700 hover:bg-slate-50'
-
         return (
             <section className="space-y-6">
-                <h1 className="text-2xl font-bold">Tipos de Mascotas</h1>
     
                 <PetTypeForm key={editing?.id ?? 'new'} petType={editing} onDone={() => setEditing(null)}/>
     
@@ -60,38 +58,38 @@ export default function PetTypesAdminPage() {
                     <>
                         <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
                             <table className={`w-full text-left text-sm ${isPlaceholderData ? 'opacity-60' : ''}`}>
-                                <thead className="border-b border-slate-200 bg-slate-50 text-slate-600">
+                                <thead className="border-b border-slate-200 bg-papaya text-slate-700">
                                     <tr>
-                                        <th scope="col" className="px-4 py-3 font-medium">Nombre</th>
-                                        <th scope="col" className="px-4 py-3 text-right font-medium">Acciones</th>
+                                        <th scope="col" className="px-4 py-3 font-semibold">Nombre</th>
+                                        <th scope="col" className="px-4 py-3 text-right font-semibold">Acciones</th>
                                     </tr>
                                 </thead>
-                                <tbody className="divide-y divide-slate-200">
+                                <tbody className="divide-y divide-slate-200 bg-tableBg">
                                     {data.content.map((petType) => (
                                         <tr key={petType.id}>
-                                            <td className="px-4 py-3">{petType.name}</td>
+                                            <td className="px-4 py-3 font-medium">{petType.name}</td>
                                             <td className="px-4 py-3">
                                                 <div className="flex justify-end gap-2">
                                                     <button
                                                         type="button"
-                                                        className={actionClass}
+                                                        className={editBtnClass}
                                                         aria-label={`Editar ${petType.name}`}
                                                         onClick={() => {
                                                             setDeleteError(null)
                                                             setEditing(petType)
                                                         }}
                                                     >
-                                                        Editar
+                                                        <Edit2 size={24} color="black"/>
                                                     </button>
                                                     <button
                                                         type="button"
-                                                        className={actionClass}
+                                                        className={deleteBtnClass}
                                                         aria-label={`Eliminar ${petType.name}`}
                                                         onClick={() => {
                                                             setDeleteError(null)
                                                             setToDelete(petType)
                                                         }}>
-                                                            Eliminar
+                                                            <Trash2 size={24} color="black"/>
                                                     </button>
                                                 </div>
                                             </td>

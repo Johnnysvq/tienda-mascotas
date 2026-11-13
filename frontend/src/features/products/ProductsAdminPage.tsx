@@ -7,7 +7,8 @@ import { productImage } from "../../lib/images";
 import { useAdminProducts, useDeleteProduct, type Product } from "./api";
 import { useOptions } from "./options";
 import { ProductForm, type ProductFormOptions } from "./ProductForm";
-import { deleteButtonClass, editButtonClass } from "../../lib/buttonStyles";
+import { deleteBtnClass, editBtnClass } from "../../lib/buttonStyles";
+import { Edit2, Trash2 } from 'reicon-react';
 
 export default function ProductsAdminPage() {
   const [page, setPage] = useState(0);
@@ -121,42 +122,42 @@ export default function ProductsAdminPage() {
 
       {data && data.content.length > 0 && (
         <>
-          <div className="overflow-x-auto rounded-lg border border-slate-200 bg-white">
+          <div className="overflow-x-auto rounded-lg border border-slate-200 shadow-md">
             <table
               className={`w-full text-left text-sm ${isPlaceholderData ? "opacity-60" : ""}`}
             >
-              <thead className="border-b border-slate-200 bg-slate-50 text-slate-600">
+              <thead className="border-b border-slate-200 bg-papaya text-slate-700">
                 <tr>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Imagen
                   </th>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Descripción
                   </th>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Marca
                   </th>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Categoría
                   </th>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Tipo
                   </th>
-                  <th scope="col" className="px-4 py-3 text-right font-medium">
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">
                     Precio
                   </th>
-                  <th scope="col" className="px-4 py-3 text-right font-medium">
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">
                     Stock
                   </th>
-                  <th scope="col" className="px-4 py-3 font-medium">
+                  <th scope="col" className="px-4 py-3 font-semibold">
                     Estado
                   </th>
-                  <th scope="col" className="px-4 py-3 text-right font-medium">
+                  <th scope="col" className="px-4 py-3 text-right font-semibold">
                     Acciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-slate-200 bg-tableBg">
                 {data.content.map((product) => {
                   const thumb = productImage(product.imageKey, 96);
                   return (
@@ -179,14 +180,14 @@ export default function ProductsAdminPage() {
                       <td className="px-4 py-3 font-medium">
                         {product.description}
                       </td>
-                      <td className="px-4 py-3">{product.brand.name}</td>
-                      <td className="px-4 py-3">{product.category.name}</td>
-                      <td className="px-4 py-3">{product.petType.name}</td>
-                      <td className="whitespace-nowrap px-4 py-3 text-right">
+                      <td className="px-4 py-3 font-medium">{product.brand.name}</td>
+                      <td className="px-4 py-3 font-medium">{product.category.name}</td>
+                      <td className="px-4 py-3 font-medium">{product.petType.name}</td>
+                      <td className="whitespace-nowrap px-4 py-3 text-right font-medium">
                       {formatPrice(product.price)}  
                       </td>
-                      <td className="px-4 py-3 text-right">{product.stock}</td>
-                      <td className="px-4 py-3">
+                      <td className="px-4 py-3 text-right font-medium">{product.stock}</td>
+                      <td className="px-4 py-3 font-medium">
                         <span
                           className={`rounded-full px-2 py-0.5 text-xs font-medium ${
                             product.status === "ACTIVE"
@@ -201,7 +202,7 @@ export default function ProductsAdminPage() {
                         <div className="flex justify-end gap-2">
                           <button
                             type="button"
-                            className={editButtonClass}
+                            className={editBtnClass}
                             aria-label={`Editar ${product.description}`}
                             onClick={() => {
                               setDeleteError(null);
@@ -209,18 +210,18 @@ export default function ProductsAdminPage() {
                               window.scrollTo({ top: 0, behavior: "smooth" });
                             }}
                           >
-                            Editar
+                            <Edit2 size={24} color="black"/>
                           </button>
                           <button
                             type="button"
-                            className={deleteButtonClass}
+                            className={deleteBtnClass}
                             aria-label={`Eliminar ${product.description}`}
                             onClick={() => {
                               setDeleteError(null);
                               setToDelete(product);
                             }}
                           >
-                            Eliminar
+                            <Trash2 size={24} color="black"/>
                           </button>
                         </div>
                       </td>

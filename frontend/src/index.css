@@ -1,1 +1,41 @@
 @import "tailwindcss";
+
+@theme {
+    --color-brand-600: #059669;
+    --color-brand-700: #047857;
+    --color-brand-800: #065f46;
+
+    --color-page: #f9f9f978;
+    --color-tableHeader: #556b2f;
+    --color-tableBg: #f8f4ea78;
+    --color-formBg: #f8f4ea78;
+
+    --color-azulOscuro: #12272E;
+    --color-aqua: #487674;
+    --color-verdeMen: #83B4AE;
+    --color-beige: #E8C99B;
+    --color-papaya: #D69369;
+    --color-naranja: #CB6330;
+    --color-cafe: #3E2411;
+
+    /* confirm dialog */
+    --animate-dialog-in: dialog-in 250ms ease-out;
+
+    @keyframes dialog-in {
+      from {
+        opacity: 0;
+        transform: translateY(-3rem);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+  
+  @layer base {
+    body {
+      @apply bg-page text-stone-900 antialiased;
+    }
+  }
+

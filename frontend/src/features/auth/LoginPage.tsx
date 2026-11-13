@@ -37,7 +37,7 @@ export default function LoginPage() {
         'focus:border-slate-500 focus:outline-none focus:ring-1 focus:ring-slate-500'
 
     return (
-        <main className="flex min-h-screen items-center justify-center bg-slate-50">
+        <main className="flex min-h-[70vh] items-center justify-center p-6">
             <form 
               onSubmit={handleSubmit}
               className="w-full max-w-sm space-y-4 rounded-lg border border-slate-200 bg-white p-6"
