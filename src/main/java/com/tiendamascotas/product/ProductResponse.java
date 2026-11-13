@@ -12,9 +12,10 @@ public record ProductResponse(
     String imageKey,
     Ref brand,
     Ref category,
-    Ref petType) {
+    Ref petType,
+    Long providerId) {
         public record Ref(Long id, String name){}
-        static ProductResponse from(Product p) {
+        static ProductResponse from(Product p, boolean admin) {
             return new ProductResponse(
                 p.getId(),
                 p.getDescription(),
@@ -25,6 +26,7 @@ public record ProductResponse(
                 p.getImageKey(),
                 new Ref(p.getBrand().getId(), p.getBrand().getName()),
                 new Ref(p.getCategory().getId(), p.getCategory().getName()),
-                new Ref(p.getPetType().getId(), p.getPetType().getName()));
+                new Ref(p.getPetType().getId(), p.getPetType().getName()),
+                admin ? p.getProvider().getId() : null);
         }
 }

@@ -28,7 +28,7 @@ public class ProductService {
         Page<Product> page = includeInactive 
             ? repository.findAll(pageable) 
             : repository.findByStatus(ProductStatus.ACTIVE, pageable);
-        return page.map(ProductResponse::from);
+        return page.map(p -> ProductResponse.from(p, includeInactive));
     }
 
     @Transactional(readOnly = true)
@@ -37,21 +37,21 @@ public class ProductService {
             .filter(p -> includeInactive || p.getStatus() == ProductStatus.ACTIVE)
             .orElseThrow(() -> notFound(id));
 
-        return ProductResponse.from(product);
+        return ProductResponse.from(product, includeInactive);
     }
 
     @Transactional
     public ProductResponse create(ProductRequest request) {
         Product product = new Product();
         apply(product, request);
-        return ProductResponse.from(repository.save(product));
+        return ProductResponse.from(repository.save(product), true);
     }
 
     @Transactional
     public ProductResponse update(Long id, ProductRequest request) {
         Product product = repository.findById(id).orElseThrow(() -> notFound(id));
         apply(product, request);
-        return ProductResponse.from(product);
+        return ProductResponse.from(product, true);
     }
 
     @Transactional
