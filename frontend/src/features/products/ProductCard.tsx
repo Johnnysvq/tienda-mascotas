@@ -1,10 +1,17 @@
 import { formatPrice } from "../../lib/format";
 import type { Product } from "./api";
 import { productImage, productImageSrcSet } from "../../lib/images";
+import { Link, useLocation } from "react-router";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  priority = false,
+}: {
+  product: Product;
+  priority?: boolean;
+}) {
   return (
-    <article className="flex w-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-white">
+    <article className="relative flex w-full flex-col overflow-hidden rounded-lg border border-slate-200 bg-formBg shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg focus-within:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0">
       <div className="aspect-square bg-slate-100">
         {product.imageKey && (
           <img
@@ -14,7 +21,8 @@ export function ProductCard({ product }: { product: Product }) {
             alt={product.description}
             width={480}
             height={480}
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
+            fetchPriority={priority ? "high" : undefined}
             decoding="async"
             referrerPolicy="no-referrer"
             className="h-full w-full object-cover"
@@ -22,10 +30,18 @@ export function ProductCard({ product }: { product: Product }) {
         )}
       </div>
       <div className="flex flex-1 flex-col gap-1 p-4">
+        <h2 className="font-semibold text-slate-900">
+          <Link
+            to={`/products/${product.id}`}
+            state={{ from: location.search }}
+            className="rounded-sm after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700"
+          >
+            {product.description}
+          </Link>
+        </h2>
         <p className="text-xs uppercase tracking-wide text-slate-500">
           {product.brand.name}
         </p>
-        <h2 className="font-semibold text-slate-900">{product.description}</h2>
         <p className="text-sm text-slate-500">
           {product.category.name} · {product.petType.name}
         </p>
