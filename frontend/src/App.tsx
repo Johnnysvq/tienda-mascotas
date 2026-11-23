@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router";
 import { RequireAuth } from "./features/auth/RequireAuth";
 import { StorePage } from "./features/products/StorePage";
 import { SiteLayout } from "./components/SiteLayout";
+import { NotFound } from "./components/NotFound";
 
 const LoginPage = lazy(() => import("./features/auth/LoginPage"));
 const AdminLayout = lazy(() => import("./features/admin/AdminLayout"));
@@ -20,6 +21,9 @@ const ProvidersAdminPage = lazy(
 const ProductsAdminPage = lazy(
   () => import("./features/products/ProductsAdminPage"),
 );
+const ProductDetailPage = lazy(
+  () => import("./features/products/ProductDetailPage"),
+);
 
 export default function App() {
   return (
@@ -28,6 +32,8 @@ export default function App() {
         <Route element={<SiteLayout />}>
           <Route path="/" element={<StorePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/products/:id" element={<ProductDetailPage />} />
+          <Route path="*" element={<NotFound />} />
           <Route path="/admin" element={<RequireAuth />}>
             <Route element={<AdminLayout />}>
               <Route index element={<AdminHome />} />

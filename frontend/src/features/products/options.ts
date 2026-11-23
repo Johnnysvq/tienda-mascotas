@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { api } from '../../lib/api'
 import type { Page } from '../../lib/types'
 import type { Ref } from './api'
+import type { SelectOption } from '../../components/SelectField'
 
 export type OptionsResource = 'brands' | 'categories' | 'pet-types' | 'providers'
 
@@ -12,3 +13,7 @@ export function useOptions(resource: OptionsResource) {
         staleTime: 5 * 60_000
     })
 }
+
+export function toSelectOptions(refs: Ref[] | undefined): SelectOption[] {
+    return (refs ?? []).map((ref) => ({ value: ref.id, label: ref.name }))
+  }

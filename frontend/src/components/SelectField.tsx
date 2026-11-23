@@ -13,7 +13,8 @@ interface SelectFieldProps
         options: SelectOption[]
         placeholder?: string
         error?: FieldError
-        registration: UseFormRegisterReturn
+        registration?: UseFormRegisterReturn
+        onValueChange?: (value: string) => void
 }
 
 export function SelectField({
@@ -23,6 +24,7 @@ export function SelectField({
     placeholder,
     error,
     registration,
+    onValueChange,
     ...selectProps
 }: SelectFieldProps) {
     return (
@@ -37,6 +39,7 @@ export function SelectField({
                 className="mt-1 w-full rounded-md border border-slate-300 bg-white px-3 py-2 focus:border-papaya focus:outline-hidden focus:ring-1 focus:ring-papaya"
                 {...selectProps}
                 {...registration}
+                onChange={registration ? registration.onChange : (event) => onValueChange?.(event.target.value)}
             >
                 {placeholder !== undefined && <option value="">{placeholder}</option>}
                 {options.map((option) => (
