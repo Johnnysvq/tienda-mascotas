@@ -1,6 +1,7 @@
 package com.tiendamascotas.category;
 
 import java.net.URI;
+import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,19 +17,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.tiendamascotas.common.web.SortRules;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController 
+@RestController
 @RequestMapping("/api/v1/categories")
 @RequiredArgsConstructor
 public class CategoryController {
 
     private final CategoryService service;
+    private static final Set<String> SORTABLE = Set.of("id", "name");
 
     @GetMapping
     public PagedModel<CategoryResponse> list(@PageableDefault(size = 20, sort = "name") Pageable pageable) {
-        return new PagedModel<>(service.findAll(pageable));
+        return new PagedModel<>(service.findAll(SortRules.validate(pageable, SORTABLE)));
     }
 
     @GetMapping("/{id}")

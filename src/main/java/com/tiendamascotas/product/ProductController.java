@@ -1,6 +1,7 @@
 package com.tiendamascotas.product;
 
 import java.net.URI;
+import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -14,22 +15,34 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import com.tiendamascotas.common.web.SortRules;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController 
+@RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService service;
+    private static final Set<String> SORTABLE = Set.of("id", "description", "price", "stock", "status");
 
     @GetMapping
-    public PagedModel<ProductResponse> list(@PageableDefault(size = 20, sort = "description") Pageable pageable, Authentication authentication) {
-        return new PagedModel<>(service.findAll(pageable, isAdmin(authentication)));
+    public PagedModel<ProductResponse> list(
+            @PageableDefault(size = 20, sort = "description") Pageable pageable,
+            @RequestParam(required = false) Long brandId,
+            @RequestParam(required = false) Long categoryId,
+            @RequestParam(required = false) Long petTypeId,
+            @RequestParam(required = false) String q,
+            Authentication authentication) {
+        ProductFilter filter = ProductFilter.of(brandId, categoryId, petTypeId, q);
+        return new PagedModel<>(
+                service.findAll(filter, SortRules.validate(pageable, SORTABLE), isAdmin(authentication)));
     }
 
     @GetMapping("/{id}")

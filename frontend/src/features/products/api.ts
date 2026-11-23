@@ -4,8 +4,9 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
-import { api } from "../../lib/api";
+import { api, ApiError } from "../../lib/api";
 import type { Page } from "../../lib/types";
+import { catalogQuery, type CatalogFilters } from "./catalogFilters";
 
 export interface Ref {
   id: number;
@@ -39,12 +40,12 @@ export interface ProductInput {
   providerId: number;
 }
 
-// Catálogo público
-export function useProducts(page = 0) {
+// Catálogo público (con filtros, búsqueda y orden)
+export function useProducts(filters: CatalogFilters) {
   return useQuery({
-    queryKey: ["products", page],
+    queryKey: ["products", "catalog", filters],
     queryFn: ({ signal }) =>
-      api<Page<Product>>(`/products?page=${page}&size=12`, { signal }),
+      api<Page<Product>>(`/products?${catalogQuery(filters)}`, { signal }),
     staleTime: 60_000,
     placeholderData: keepPreviousData,
   });
@@ -91,5 +92,17 @@ export function useDeleteProduct() {
     mutationFn: (id: number) =>
       api<void>(`/products/${id}`, { method: "DELETE" }),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["products"] }),
+  });
+}
+
+export function useProduct(id: string | undefined) {
+  return useQuery({
+    queryKey: ["products", "detail", id],
+    queryFn: ({ signal }) => api<Product>(`/products/${id}`, { signal }),
+    enabled: id !== undefined,
+    staleTime: 60_000,
+    // Un 404 no se reintenta: el producto no existe o está oculto
+    retry: (failureCount, error) =>
+      !(error instanceof ApiError && error.status === 404) && failureCount < 2,
   });
 }

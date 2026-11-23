@@ -1,6 +1,7 @@
 package com.tiendamascotas.brand;
 
 import java.net.URI;
+import java.util.Set;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -16,21 +17,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.tiendamascotas.common.web.SortRules;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-@RestController 
+@RestController
 @RequestMapping("/api/v1/brands")
 @RequiredArgsConstructor
 public class BrandController {
 
     private final BrandService service;
+    private static final Set<String> SORTABLE = Set.of("id", "name");
 
     @GetMapping
     public PagedModel<BrandResponse> list(@PageableDefault(size = 20, sort = "name") Pageable pageable) {
-        return new PagedModel<>(service.findAll(pageable));
+        return new PagedModel<>(service.findAll(SortRules.validate(pageable, SORTABLE)));
     }
-    
+
     @GetMapping("/{id}")
     public BrandResponse get(@PathVariable Long id) {
         return service.findById(id);

@@ -22,6 +22,7 @@ import {
 import { productSchema, type ProductFormValues } from "./productSchema";
 import { decimalOnly, digitsOnly } from "../../lib/inputFilters";
 import { saveBtnClass, cancelBtnClass } from "../../lib/buttonStyles"
+import { toSelectOptions } from "./options";
 
 export interface ProductFormOptions {
   brands: Ref[];
@@ -64,9 +65,6 @@ const statusOptions: SelectOption[] = [
   { value: "ACTIVE", label: "Activo (visible en la tienda)" },
   { value: "INACTIVE", label: "Inactivo (oculto)" },
 ];
-
-const toOptions = (refs: Ref[]): SelectOption[] =>
-  refs.map((r) => ({ value: r.id, label: r.name }));
 
 export function ProductForm({ product, options, onDone }: ProductFormProps) {
   const create = useCreateProduct();
@@ -262,7 +260,7 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
           id="product-brand"
           label="Marca"
           placeholder="Selecciona…"
-          options={toOptions(options.brands)}
+          options={toSelectOptions(options.brands)}
           error={errors.brandId}
           registration={register("brandId")}
         />
@@ -271,7 +269,7 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
           id="product-category"
           label="Categoría"
           placeholder="Selecciona…"
-          options={toOptions(options.categories)}
+          options={toSelectOptions(options.categories)}
           error={errors.categoryId}
           registration={register("categoryId")}
         />
@@ -280,7 +278,7 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
           id="product-pet-type"
           label="Tipo de mascota"
           placeholder="Selecciona…"
-          options={toOptions(options.petTypes)}
+          options={toSelectOptions(options.petTypes)}
           error={errors.petTypeId}
           registration={register("petTypeId")}
         />
@@ -289,7 +287,7 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
           id="product-provider"
           label="Proveedor"
           placeholder="Selecciona…"
-          options={toOptions(options.providers)}
+          options={toSelectOptions(options.providers)}
           error={errors.providerId}
           registration={register("providerId")}
         />
@@ -321,7 +319,7 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
             </p>
           )}
         </div>
-        <div className="sm:col-span-2 lg:col-span-3">
+        <div className="sm:col-span-2 lg:col-span-3 border border-papaya rounded-md shadow-md px-4 py-3">
           <label
             htmlFor="product-image"
             className="block text-sm font-medium text-slate-700"
@@ -345,13 +343,13 @@ export function ProductForm({ product, options, onDone }: ProductFormProps) {
                 type="file"
                 accept={ALLOWED_IMAGE_TYPES.join(",")}
                 onChange={handleFileChange}
-                className="block text-sm text-slate-600 file:mr-3 file:rounded-md file:border file:border-slate-300 file:bg-white file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-100"
+                className="block text-md font-semibold text-slate-700 file:mr-3 file:rounded-md file:border file:border-slate-700 file:cursor-pointer file:bg-slate-100 file:px-3 file:py-1.5 file:text-sm file:font-medium file:text-slate-700 hover:file:bg-slate-300"
               />
               {shownImage && (
                 <button
                   type="button"
                   onClick={handleRemoveImage}
-                  className="text-sm text-red-600 hover:underline cursor-pointer"
+                  className="text-sm text-slate-800 bg-red-300 rounded-md px-2 py-1 border-2 border-red-500 font-medium hover:bg-red-200 cursor-pointer"
                 >
                   Quitar imagen
                 </button>

@@ -17,7 +17,7 @@ export interface Provider {
 
 export interface ProviderInput {
   name: string;
-  phoneNumber: string;
+  phoneNumber: string | null;
   email: string;
 }
 

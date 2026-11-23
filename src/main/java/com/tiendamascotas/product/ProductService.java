@@ -13,7 +13,7 @@ import com.tiendamascotas.provider.ProviderService;
 
 import lombok.RequiredArgsConstructor;
 
-@Service 
+@Service
 @RequiredArgsConstructor
 public class ProductService {
 
@@ -24,18 +24,16 @@ public class ProductService {
     private final ProviderService providerService;
 
     @Transactional(readOnly = true)
-    public Page<ProductResponse> findAll(Pageable pageable, boolean includeInactive) {
-        Page<Product> page = includeInactive 
-            ? repository.findAll(pageable) 
-            : repository.findByStatus(ProductStatus.ACTIVE, pageable);
-        return page.map(p -> ProductResponse.from(p, includeInactive));
+    public Page<ProductResponse> findAll(ProductFilter filter, Pageable pageable, boolean includeInactive) {
+        return repository.findAll(ProductSpecifications.from(filter, includeInactive), pageable)
+                .map(p -> ProductResponse.from(p, includeInactive));
     }
 
     @Transactional(readOnly = true)
     public ProductResponse findbyId(Long id, boolean includeInactive) {
         Product product = repository.findById(id)
-            .filter(p -> includeInactive || p.getStatus() == ProductStatus.ACTIVE)
-            .orElseThrow(() -> notFound(id));
+                .filter(p -> includeInactive || p.getStatus() == ProductStatus.ACTIVE)
+                .orElseThrow(() -> notFound(id));
 
         return ProductResponse.from(product, includeInactive);
     }

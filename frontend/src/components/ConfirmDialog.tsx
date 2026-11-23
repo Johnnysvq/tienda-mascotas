@@ -1,15 +1,15 @@
-import { useEffect, useId, useRef } from 'react'
-import { Loader, Trash2, Xmark } from 'reicon-react'
-import { cancelBtnClass, deleteBtnClass } from '../lib/buttonStyles'
+import { useEffect, useId, useRef } from "react";
+import { Loader, Trash2, Xmark } from "reicon-react";
+import { cancelBtnClass, deleteBtnClass } from "../lib/buttonStyles";
 
 interface ConfirmDialogProps {
-  open: boolean
-  title: string
-  message: string
-  confirmLabel: string
-  pending?: boolean
-  onConfirm: () => void
-  onCancel: () => void
+  open: boolean;
+  title: string;
+  message: string;
+  confirmLabel: string;
+  pending?: boolean;
+  onConfirm: () => void;
+  onCancel: () => void;
 }
 
 export function ConfirmDialog({
@@ -21,17 +21,17 @@ export function ConfirmDialog({
   onConfirm,
   onCancel,
 }: ConfirmDialogProps) {
-  const ref = useRef<HTMLDialogElement>(null)
-  const titleId = useId()
-  const messageId = useId()
+  const ref = useRef<HTMLDialogElement>(null);
+  const titleId = useId();
+  const messageId = useId();
 
   // showModal() da foco atrapado, cierre con Esc y fondo bloqueado de forma nativa
   useEffect(() => {
-    const dialog = ref.current
-    if (!dialog) return
-    if (open && !dialog.open) dialog.showModal()
-    if (!open && dialog.open) dialog.close()
-  }, [open])
+    const dialog = ref.current;
+    if (!dialog) return;
+    if (open && !dialog.open) dialog.showModal();
+    if (!open && dialog.open) dialog.close();
+  }, [open]);
 
   return (
     <dialog
@@ -40,8 +40,8 @@ export function ConfirmDialog({
       aria-labelledby={titleId}
       aria-describedby={messageId}
       onCancel={(event) => {
-        event.preventDefault()
-        onCancel()
+        event.preventDefault();
+        onCancel();
       }}
       className="mx-auto mb-auto mt-16 w-[calc(100%-2rem)] max-w-lg rounded-xl border border-slate-200 bg-white p-4 shadow-xl backdrop:bg-slate-900/50 motion-safe:open:animate-dialog-in"
     >
@@ -58,18 +58,9 @@ export function ConfirmDialog({
         <div className="flex shrink-0 gap-2">
           <button
             type="button"
-            onClick={onCancel}
-            aria-label="Cancelar"
-            title="Cancelar"
-            className={cancelBtnClass}
-          >
-            <Xmark size={24} color="black" />
-          </button>
-          <button
-            type="button"
             onClick={onConfirm}
             disabled={pending}
-            aria-label={pending ? 'Eliminando' : confirmLabel}
+            aria-label={pending ? "Eliminando" : confirmLabel}
             title={confirmLabel}
             className={deleteBtnClass}
           >
@@ -81,8 +72,17 @@ export function ConfirmDialog({
               <Trash2 size={24} color="black" />
             )}
           </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            aria-label="Cancelar"
+            title="Cancelar"
+            className={cancelBtnClass}
+          >
+            <Xmark size={24} color="black" />
+          </button>
         </div>
       </div>
     </dialog>
-  )
+  );
 }

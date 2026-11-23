@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { useCurrentUser, useLogout } from "../features/auth/api";
 import { Logout, Login } from "reicon-react";
+import { NavSearch } from "../features/products/NavSearch";
 
 export function SiteNavbar() {
   const { data: user, isPending } = useCurrentUser();
@@ -18,6 +19,9 @@ export function SiteNavbar() {
       ? [{ name: "Administración", path: "/admin", end: false }]
       : []),
   ];
+
+  const { pathname } = useLocation();
+  const showSearch = !pathname.startsWith("/admin") && pathname !== "/login";
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10);
@@ -48,13 +52,13 @@ export function SiteNavbar() {
 
   const barClass = isScrolled
     ? "bg-white/80 text-stone-800 shadow-md backdrop-blur-lg"
-    : "bg-[#13272E] text-white";
+    : "bg-aqua text-white";
   const underlineClass = isScrolled ? "bg-stone-800" : "bg-white";
   const buttonClass =
     "inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap rounded-full px-5 py-2 text-sm font-medium transition-colors disabled:opacity-60 " +
     (isScrolled
-      ? "bg-naranja text-white hover:bg-naranja/90"
-      : "bg-white text-brand-800 hover:bg-stone-100");
+      ? "bg-verdeMen text-white hover:bg-verdeMen/80"
+      : "bg-naranja text-white hover:bg-naranja/80");
 
   return (
     <>
@@ -63,10 +67,14 @@ export function SiteNavbar() {
       >
         <nav
           aria-label="Principal"
-          className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3 md:py-4"
+          className="page-container flex items-center gap-8 py-3 md:py-4"
         >
           <Link to="/" className="text-xl font-bold tracking-tight">
-            Tienda Mascotas
+            <img
+              src="/logo-salchicha.svg"
+              alt="Logo de la tienda"
+              className="h-10 w-auto"
+            />
           </Link>
           {/* Escritorio */}
           <div className="hidden items-center gap-8 md:flex">
@@ -91,7 +99,14 @@ export function SiteNavbar() {
             ))}
           </div>
 
-          <div className="hidden items-center gap-3 md:flex">
+          {showSearch && (
+            <NavSearch
+              variant={isScrolled ? "onLight" : "onDark"}
+              className="mx-auto hidden max-w-sm flex-1 md:block"
+            />
+          )}
+
+          <div className="ml-auto hidden items-center gap-3 md:flex">
             {user && (
               <span className="text-sm opacity-90">{user.username}</span>
             )}
@@ -103,11 +118,13 @@ export function SiteNavbar() {
                   disabled={logout.isPending}
                   className={buttonClass}
                 >
-                  Cerrar sesión<Logout size={18} />
+                  Cerrar sesión
+                  <Logout size={18} />
                 </button>
               ) : (
                 <Link to="/login" className={buttonClass}>
-                  Iniciar sesión<Login size={18} />
+                  Iniciar sesión
+                  <Login size={18} />
                 </Link>
               ))}
           </div>
@@ -115,7 +132,7 @@ export function SiteNavbar() {
           {/* Botón del menú móvil */}
           <button
             type="button"
-            className="cursor-pointer p-2 md:hidden"
+            className="ml-auto cursor-pointer p-2 md:hidden"
             aria-label="Abrir menú"
             aria-expanded={isMenuOpen}
             aria-controls="mobile-menu"
@@ -162,6 +179,14 @@ export function SiteNavbar() {
             <line x1="6" y1="6" x2="18" y2="18" />
           </svg>
         </button>
+
+        {showSearch && (
+          <NavSearch
+            variant="onLight"
+            className="w-72 max-w-[80vw]"
+            onSearched={() => setIsMenuOpen(false)}
+          />
+        )}
 
         {navLinks.map((link) => (
           <Link
