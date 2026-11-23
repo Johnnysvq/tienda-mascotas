@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router";
-import { useCurrentUser, useLogout } from "../features/auth/api";
+import { isAdmin, useCurrentUser, useLogout } from "../features/auth/api";
 import { Logout, Login } from "reicon-react";
 import { NavSearch } from "../features/products/NavSearch";
 
@@ -11,17 +11,18 @@ export function SiteNavbar() {
   const [isScrolled, setIsScrolled] = useState(() => window.scrollY > 10);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const isAdmin = user?.roles.includes("ROLE_ADMIN") ?? false;
+  const admin = isAdmin(user);
 
   const navLinks = [
     { name: "Tienda", path: "/", end: true },
-    ...(isAdmin
-      ? [{ name: "Administración", path: "/admin", end: false }]
-      : []),
+    ...(admin ? [{ name: "Administración", path: "/admin", end: false }] : []),
   ];
 
   const { pathname } = useLocation();
-  const showSearch = !pathname.startsWith("/admin") && pathname !== "/login";
+  const showSearch =
+    !pathname.startsWith("/admin") &&
+    pathname !== "/login" &&
+    pathname !== "/register";
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10);
@@ -59,6 +60,12 @@ export function SiteNavbar() {
     (isScrolled
       ? "bg-verdeMen text-white hover:bg-verdeMen/80"
       : "bg-naranja text-white hover:bg-naranja/80");
+
+  const btnCrearClass =
+    "inline-flex shrink-0 cursor-pointer items-center gap-2 whitespace-nowrap rounded-full px-5 py-2 text-sm font-medium transition-colors disabled:opacity-60 " +
+    (isScrolled
+      ? "bg-naranja text-white hover:bg-naranja/80"
+      : "bg-verdeMen text-white hover:bg-verdeMen/80");
 
   return (
     <>
@@ -108,7 +115,9 @@ export function SiteNavbar() {
 
           <div className="ml-auto hidden items-center gap-3 md:flex">
             {user && (
-              <span className="text-sm opacity-90">{user.username}</span>
+              <span className="text-sm font-medium opacity-90">
+                Hola, {user.firstName}
+              </span>
             )}
             {!isPending &&
               (user ? (
@@ -122,10 +131,18 @@ export function SiteNavbar() {
                   <Logout size={18} />
                 </button>
               ) : (
-                <Link to="/login" className={buttonClass}>
-                  Iniciar sesión
-                  <Login size={18} />
-                </Link>
+                <>
+                  <Link
+                    to="/register"
+                    className={btnCrearClass}
+                  >
+                    Crear cuenta
+                  </Link>
+                  <Link to="/login" className={buttonClass}>
+                    Iniciar sesión
+                    <Login size={18} />
+                  </Link>
+                </>
               ))}
           </div>
 
@@ -199,7 +216,7 @@ export function SiteNavbar() {
         ))}
 
         {user && (
-          <span className="text-sm text-stone-500">{user.username}</span>
+          <span className="text-sm text-stone-500">{user.firstName}</span>
         )}
         {!isPending &&
           (user ? (

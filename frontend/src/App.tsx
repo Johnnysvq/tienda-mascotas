@@ -24,6 +24,7 @@ const ProductsAdminPage = lazy(
 const ProductDetailPage = lazy(
   () => import("./features/products/ProductDetailPage"),
 );
+const RegisterPage = lazy(() => import("./features/auth/RegisterPage"));
 
 export default function App() {
   return (
@@ -32,9 +33,10 @@ export default function App() {
         <Route element={<SiteLayout />}>
           <Route path="/" element={<StorePage />} />
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="*" element={<NotFound />} />
-          <Route path="/admin" element={<RequireAuth />}>
+          <Route path="/admin" element={<RequireAuth role="ADMIN" />}>
             <Route element={<AdminLayout />}>
               <Route index element={<AdminHome />} />
               <Route path="brands" element={<BrandsAdminPage />} />
