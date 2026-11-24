@@ -25,6 +25,7 @@ const ProductDetailPage = lazy(
   () => import("./features/products/ProductDetailPage"),
 );
 const RegisterPage = lazy(() => import("./features/auth/RegisterPage"));
+const CartPage = lazy(() => import("./features/cart/CartPage"));
 
 export default function App() {
   return (
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="*" element={<NotFound />} />
+          <Route path="/cart" element={<CartPage />} />
           <Route path="/admin" element={<RequireAuth role="ADMIN" />}>
             <Route element={<AdminLayout />}>
               <Route index element={<AdminHome />} />

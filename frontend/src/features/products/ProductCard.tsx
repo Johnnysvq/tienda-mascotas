@@ -1,7 +1,7 @@
 import { formatPrice } from "../../lib/format";
 import type { Product } from "./api";
 import { productImage, productImageSrcSet } from "../../lib/images";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 
 export function ProductCard({
   product,

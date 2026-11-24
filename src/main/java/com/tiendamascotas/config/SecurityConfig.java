@@ -41,6 +41,7 @@ public class SecurityConfig {
                                                 .requestMatchers("/api/v1/providers", "/api/v1/providers/**")
                                                 .hasRole("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
+                                                .requestMatchers(HttpMethod.POST, "/api/v1/cart/quote").permitAll()
                                                 .anyRequest().hasRole("ADMIN"))
                                 .formLogin(form -> form
                                                 .loginProcessingUrl("/api/v1/auth/login")

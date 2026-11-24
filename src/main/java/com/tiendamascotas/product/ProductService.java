@@ -1,5 +1,10 @@
 package com.tiendamascotas.product;
 
+import java.util.Collection;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -55,6 +60,14 @@ public class ProductService {
     @Transactional
     public void delete(Long id) {
         repository.delete(repository.findById(id).orElseThrow(() -> notFound(id)));
+    }
+
+    @Transactional
+    public Map<Long, ProductSnapshot> findSnapchots(Collection<Long> ids) {
+        return repository.findAllById(ids).stream()
+                .map(p -> new ProductSnapshot(p.getId(), p.getDescription(), p.getImageKey(), p.getPrice(),
+                        p.getStock(), p.getStatus()))
+                .collect(Collectors.toMap(ProductSnapshot::id, Function.identity()));
     }
 
     private void apply(Product product, ProductRequest request) {

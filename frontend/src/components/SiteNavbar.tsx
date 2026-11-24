@@ -3,6 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router";
 import { isAdmin, useCurrentUser, useLogout } from "../features/auth/api";
 import { Logout, Login } from "reicon-react";
 import { NavSearch } from "../features/products/NavSearch";
+import { CartLink } from "../features/cart/CartLink";
 
 export function SiteNavbar() {
   const { data: user, isPending } = useCurrentUser();
@@ -23,6 +24,7 @@ export function SiteNavbar() {
     !pathname.startsWith("/admin") &&
     pathname !== "/login" &&
     pathname !== "/register";
+  const showCart = !pathname.startsWith("/admin");
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 10);
@@ -114,6 +116,7 @@ export function SiteNavbar() {
           )}
 
           <div className="ml-auto hidden items-center gap-3 md:flex">
+            {showCart && <CartLink />}
             {user && (
               <span className="text-sm font-medium opacity-90">
                 Hola, {user.firstName}
@@ -132,10 +135,7 @@ export function SiteNavbar() {
                 </button>
               ) : (
                 <>
-                  <Link
-                    to="/register"
-                    className={btnCrearClass}
-                  >
+                  <Link to="/register" className={btnCrearClass}>
                     Crear cuenta
                   </Link>
                   <Link to="/login" className={buttonClass}>
@@ -147,27 +147,30 @@ export function SiteNavbar() {
           </div>
 
           {/* Botón del menú móvil */}
-          <button
-            type="button"
-            className="ml-auto cursor-pointer p-2 md:hidden"
-            aria-label="Abrir menú"
-            aria-expanded={isMenuOpen}
-            aria-controls="mobile-menu"
-            onClick={() => setIsMenuOpen(true)}
-          >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
+          <div className="ml-auto flex items-center gap-1 md:hidden">
+            {showCart && <CartLink />}
+            <button
+              type="button"
+              className="cursor-pointer p-2"
+              aria-label="Abrir menú"
+              aria-expanded={isMenuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setIsMenuOpen(true)}
             >
-              <line x1="4" y1="6" x2="20" y2="6" />
-              <line x1="4" y1="12" x2="20" y2="12" />
-              <line x1="4" y1="18" x2="20" y2="18" />
-            </svg>
-          </button>
+              <svg
+                className="h-6 w-6"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <line x1="4" y1="6" x2="20" y2="6" />
+                <line x1="4" y1="12" x2="20" y2="12" />
+                <line x1="4" y1="18" x2="20" y2="18" />
+              </svg>
+            </button>
+          </div>
         </nav>
       </header>
 

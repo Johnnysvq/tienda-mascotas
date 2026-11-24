@@ -6,6 +6,7 @@ import { productImage, productImageSrcSet } from "../../lib/images";
 import { usePageTitle } from "../../lib/usePageTitle";
 import { useProduct } from "./api";
 import { ArrowLeft5 } from 'reicon-react';
+import { AddToCartButton } from '../cart/AddToCartButton'
 
 const ID_PATTERN = /^\d{1,18}$/;
 
@@ -109,6 +110,7 @@ export default function ProductDetailPage() {
 
           <p className="text-3xl font-bold">{formatPrice(product.price)}</p>
           <p className={`font-medium ${stock.className}`}>{stock.label}</p>
+          {product.status === 'ACTIVE' && <AddToCartButton product={product} />}
 
           {product.detail && (
             <section
