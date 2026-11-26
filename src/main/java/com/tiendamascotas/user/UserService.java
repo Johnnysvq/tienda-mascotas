@@ -9,11 +9,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.tiendamascotas.common.exception.DuplicateResourceException;
 import com.tiendamascotas.common.exception.InvalidRequestException;
+import com.tiendamascotas.common.exception.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor 
+@RequiredArgsConstructor
 public class UserService {
 
     private static final int BCRYPT_MAX_BYTES = 72;
@@ -45,6 +46,12 @@ public class UserService {
     @Transactional(readOnly = true)
     public String firstNameOf(String email) {
         return repository.findByEmailIgnoreCase(email).map(AppUser::getFirstName).orElse("");
+    }
+
+    @Transactional(readOnly = true)
+    public AppUser requireByEmail(String email) {
+        return repository.findByEmailIgnoreCase(email)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado"));
     }
 
     static String normalizeEmail(String email) {

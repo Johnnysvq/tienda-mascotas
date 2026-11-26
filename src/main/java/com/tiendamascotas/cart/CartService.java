@@ -28,7 +28,7 @@ public class CartService {
             requested.merge(line.productId(), line.quantity(), Integer::sum);
         }
 
-        Map<Long, ProductSnapshot> products = productService.findSnapchots(requested.keySet());
+        Map<Long, ProductSnapshot> products = productService.findSnapshots(requested.keySet());
         List<CartQuoteResponse.Line> lines = new ArrayList<>();
         BigDecimal total = BigDecimal.ZERO;
 

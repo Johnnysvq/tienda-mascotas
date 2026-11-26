@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.logout.HttpStatusReturnin
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfFilter;
 
+import jakarta.servlet.DispatcherType;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
@@ -36,10 +37,13 @@ public class SecurityConfig {
                                 .addFilterBefore(new RegistrationRateLimitFilter(limiter),
                                                 UsernamePasswordAuthenticationFilter.class)
                                 .authorizeHttpRequests(auth -> auth
+                                                .dispatcherTypeMatchers(DispatcherType.ERROR).permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/api/v1/auth/register").permitAll()
                                                 .requestMatchers("/api/v1/auth/me").authenticated()
                                                 .requestMatchers("/api/v1/providers", "/api/v1/providers/**")
                                                 .hasRole("ADMIN")
+                                                .requestMatchers("/api/v1/orders", "/api/v1/orders/**").authenticated()
+                                                .requestMatchers("/api/v1/admin/**").hasRole("ADMIN")
                                                 .requestMatchers(HttpMethod.GET, "/api/v1/**").permitAll()
                                                 .requestMatchers(HttpMethod.POST, "/api/v1/cart/quote").permitAll()
                                                 .anyRequest().hasRole("ADMIN"))

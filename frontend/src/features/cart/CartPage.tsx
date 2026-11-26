@@ -198,14 +198,27 @@ export default function CartPage() {
             Los precios y la disponibilidad se confirman al finalizar la compra.
           </p>
 
-          <button
-            type="button"
-            disabled
-            title="Disponible en la siguiente fase"
-            className="w-full cursor-not-allowed rounded-full bg-slate-200 px-6 py-3 font-medium text-slate-500"
-          >
-            Finalizar compra
-          </button>
+          {hasProblems ? (
+            <>
+              <button
+                type="button"
+                disabled
+                className="w-full cursor-not-allowed rounded-full bg-slate-200 px-6 py-3 font-medium text-slate-500"
+              >
+                Finalizar compra
+              </button>
+              <p className="text-center text-xs text-amber-700">
+                Ajusta el carrito para poder continuar.
+              </p>
+            </>
+          ) : (
+            <Link
+              to="/checkout"
+              className="block w-full rounded-full bg-brand-700 px-6 py-3 text-center font-medium text-white hover:bg-brand-800"
+            >
+              Finalizar compra
+            </Link>
+          )}
 
           <div className="flex items-center justify-between text-sm">
             <Link to="/" className="font-medium text-brand-700 hover:underline">

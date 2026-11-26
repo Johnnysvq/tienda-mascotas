@@ -63,11 +63,16 @@ public class ProductService {
     }
 
     @Transactional
-    public Map<Long, ProductSnapshot> findSnapchots(Collection<Long> ids) {
+    public Map<Long, ProductSnapshot> findSnapshots(Collection<Long> ids) {
         return repository.findAllById(ids).stream()
                 .map(p -> new ProductSnapshot(p.getId(), p.getDescription(), p.getImageKey(), p.getPrice(),
                         p.getStock(), p.getStatus()))
                 .collect(Collectors.toMap(ProductSnapshot::id, Function.identity()));
+    }
+
+    @Transactional
+    public void releaseStock(Long id, int quantity) {
+        repository.incrementStock(id, quantity);
     }
 
     private void apply(Product product, ProductRequest request) {
@@ -89,5 +94,19 @@ public class ProductService {
 
     private ResourceNotFoundException notFound(Long id) {
         return new ResourceNotFoundException("Producto con id " + id + " no encontrado");
+    }
+
+    /**
+     * Descuenta stock de forma atómica. Devuelve false si no hay existencias
+     * suficientes.
+     */
+    @Transactional
+    public boolean tryReserveStock(Long id, int quantity) {
+        return repository.decrementStock(id, quantity) == 1;
+    }
+
+    @Transactional(readOnly = true)
+    public Product getReference(Long id) {
+        return repository.getReferenceById(id);
     }
 }

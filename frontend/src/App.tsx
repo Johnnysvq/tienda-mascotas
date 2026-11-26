@@ -26,6 +26,13 @@ const ProductDetailPage = lazy(
 );
 const RegisterPage = lazy(() => import("./features/auth/RegisterPage"));
 const CartPage = lazy(() => import("./features/cart/CartPage"));
+const CheckoutPage = lazy(() => import("./features/orders/CheckoutPage"));
+const MyOrdersPage = lazy(() => import("./features/orders/MyOrdersPage"));
+const OrderDetailPage = lazy(() => import("./features/orders/OrderDetailPage"));
+const OrdersAdminPage = lazy(() => import("./features/orders/OrdersAdminPage"));
+const OrderAdminDetailPage = lazy(
+  () => import("./features/orders/OrderAdminDetailPage"),
+);
 
 export default function App() {
   return (
@@ -38,6 +45,11 @@ export default function App() {
           <Route path="/products/:id" element={<ProductDetailPage />} />
           <Route path="*" element={<NotFound />} />
           <Route path="/cart" element={<CartPage />} />
+          <Route element={<RequireAuth />}>
+            <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/orders" element={<MyOrdersPage />} />
+            <Route path="/orders/:id" element={<OrderDetailPage />} />
+          </Route>
           <Route path="/admin" element={<RequireAuth role="ADMIN" />}>
             <Route element={<AdminLayout />}>
               <Route index element={<AdminHome />} />
@@ -46,6 +58,8 @@ export default function App() {
               <Route path="pet-types" element={<PetTypesAdminPage />} />
               <Route path="providers" element={<ProvidersAdminPage />} />
               <Route path="products" element={<ProductsAdminPage />} />
+              <Route path="orders" element={<OrdersAdminPage />} />
+              <Route path="orders/:id" element={<OrderAdminDetailPage />} />
             </Route>
           </Route>
           <Route

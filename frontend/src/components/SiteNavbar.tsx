@@ -16,6 +16,7 @@ export function SiteNavbar() {
 
   const navLinks = [
     { name: "Tienda", path: "/", end: true },
+    ...(user ? [{ name: "Mis pedidos", path: "/orders", end: false }] : []),
     ...(admin ? [{ name: "Administración", path: "/admin", end: false }] : []),
   ];
 

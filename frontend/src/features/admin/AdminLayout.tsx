@@ -2,6 +2,7 @@ import { NavLink, Outlet } from "react-router";
 
 const sections = [
   { to: "/admin", label: "Inicio", end: true },
+  { to: '/admin/orders', label: 'Pedidos' },
   { to: "/admin/brands", label: "Marcas" },
   { to: "/admin/categories", label: "Categorías" },
   { to: "/admin/pet-types", label: "Tipos Mascota" },

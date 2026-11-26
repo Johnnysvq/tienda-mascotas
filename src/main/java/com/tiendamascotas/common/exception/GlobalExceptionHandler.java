@@ -48,4 +48,16 @@ public class GlobalExceptionHandler {
     ProblemDetail handleInvalidRequest(InvalidRequestException ex) {
         return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage());
     }
+
+    @ExceptionHandler(StockConflictException.class)
+    ProblemDetail handleStockConflict(StockConflictException ex) {
+        ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problem.setProperty("productIds", ex.getProductIds());
+        return problem;
+    }
+
+    @ExceptionHandler(StateConflictException.class)
+    ProblemDetail handleStateConflict(StateConflictException ex) {
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+    }
 }
